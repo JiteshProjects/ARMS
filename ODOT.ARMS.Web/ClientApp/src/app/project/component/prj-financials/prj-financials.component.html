@@ -1,0 +1,72 @@
+<kendo-menu class="sub-menu menu-override">
+  <kendo-menu-item text="Overview">
+    <a>Overview</a>
+  </kendo-menu-item>
+  <kendo-menu-item text="Budget">
+    <a>Budget</a>
+  </kendo-menu-item>
+</kendo-menu>
+<kendo-grid [kendoGridBinding]="gridOverViewData"
+            [pageSize]="10"
+            [pageable]="true"
+            [sortable]="true"
+            [height]="300">
+  <kendo-grid-column field="Description" [width]="100"></kendo-grid-column>
+  <kendo-grid-column field="Amount" [width]="100"></kendo-grid-column>
+</kendo-grid>
+<kendo-grid [kendoGridBinding]="gridPhaseData"
+            [pageSize]="10"
+            [pageable]="true"
+            [sortable]="true"
+            [height]="300">
+  <kendo-grid-column field="Phase" [width]="100"></kendo-grid-column>
+  <kendo-grid-column field="Category" [width]="100"></kendo-grid-column>
+  <kendo-grid-column field="Budget" [width]="100"></kendo-grid-column>
+  <kendo-grid-column field="Invoiced" [width]="100"></kendo-grid-column>
+  <kendo-grid-column field="Balanced" [width]="100"></kendo-grid-column>
+
+</kendo-grid>
+<kendo-grid [kendoGridBinding]="gridBudgetData"
+            [pageSize]="10"
+            [pageable]="true"
+            [sortable]="true"
+            [height]="300">
+  <kendo-grid-column field="BudgetCategory" [width]="100"></kendo-grid-column>
+  <kendo-grid-column field="BudgetAmount" [width]="100"></kendo-grid-column>
+</kendo-grid>
+
+<kendo-grid [kendoGridBinding]="gridBudgetCategoryData"
+            [pageSize]="10"
+            [pageable]="true"
+            [sortable]="true"
+            [height]="300">
+  <ng-template kendoGridToolbarTemplate>
+    <div class="row">
+      <div class="col-12 table-button ">
+        <div class="add-btn-table">
+          <div class="grid-btn-bg">
+            <button type="button" class="btn add-grid-button k-button k-grid-add-command" (click)="onAddClick(true)" kendoGridAddCommand>
+              <img src="../../../../../assets/grid_toolbar_icons/Add_Toolbar_Icon.svg" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <kendo-grid-column field="Phase" [width]="100"></kendo-grid-column>
+  <kendo-grid-column field="Title" [width]="100"></kendo-grid-column>
+  <kendo-grid-column field="Quantity" [width]="100"></kendo-grid-column>
+  <kendo-grid-column field="ODOTFunding" [width]="100"></kendo-grid-column>
+  <kendo-grid-column field="OrgCostSharing" [width]="100"></kendo-grid-column>
+  <kendo-grid-column field="Status" [width]="100"></kendo-grid-column>
+  <kendo-grid-command-column title="Edit" width="30px">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <button type="button" class="btn btn-edit"><span class="fas fa-pencil-alt"></span></button>
+    </ng-template>
+  </kendo-grid-command-column>
+</kendo-grid>
+
+
+
+
+

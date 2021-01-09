@@ -1,0 +1,23 @@
+<!--<div class="card-header">Notifications</div>-->
+<div class="card-body">
+  <div class="row">
+    <div class="col-12">
+      <label class="k-label">
+        Enter text which will appear on the ARMS login Page:
+      </label>
+      <textarea kendoTextArea rows="4" cols="50" [maxlength]="maxChars" ng-trim="false" [(ngModel)]="pDescription"></textarea>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <label class="float-right">{{pDescription.length}} OF {{maxChars}} Characters</label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <button type="submit" class="btn float-right" [disabled]="isSaveButtonDisabled" (click)="save()">Save</button>
+      <button type="submit" class="btn float-right" [disabled]="isSaveButtonDisabled" (click)="clearTxt()">Clear Text</button>
+    </div>
+  </div>
+</div>
+

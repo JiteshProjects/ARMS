@@ -1,0 +1,58 @@
+<kendo-grid [kendoGridBinding]="gridBudgetCategoryData" #grid class="k-fin-data forms-grid extra-grid-space"
+            [pageSize]="20"
+            [pageable]="true"
+            [sortable]="true">
+  <kendo-grid-column field="BcAltId" title="altId" [hidden]="true"></kendo-grid-column>
+  <kendo-grid-column field="BudgetId" title="id" [hidden]="true"></kendo-grid-column>
+  <kendo-grid-column field="Phase" [width]="100"></kendo-grid-column>
+  <kendo-grid-column field="Title" [width]="100"></kendo-grid-column>
+  <kendo-grid-column field="ODOTFunding" [width]="100"></kendo-grid-column>
+  <kendo-grid-column field="OrgCostSharing" [width]="100"></kendo-grid-column>
+  <kendo-grid-column field="Status" [width]="100"></kendo-grid-column>
+  <kendo-grid-command-column title="Edit" width="30px">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <button type="button" kendoGridEditCommand class="btn btn-edit" (click)="onEditClick(dataItem)"><span class="fas fa-pencil-alt"></span></button>
+    </ng-template>
+  </kendo-grid-command-column>
+</kendo-grid>
+
+<!--
+  Add/Edit Budget dialogue
+-->
+<kendo-dialog [width]="500" [height]="280" *ngIf="editDialogOpened" (close)="editDialogClose()">
+  <kendo-dialog-titlebar class="k-prjdata">Edit Fringe Benefits</kendo-dialog-titlebar>
+  <form class="k-form" [formGroup]="this.parent.oneForAllEditBudgetDialogForm" (ngSubmit)="this.parent.submitEditBudgetForm()">
+    <div class="row">
+      <div class="col-6">
+        <label for="phase">Phase</label>
+        <kendo-dropdownlist formControlName="phase" [data]="this.parent.phases" [textField]="'text'" [valueField]="'value'">
+        </kendo-dropdownlist>
+      </div>
+      <div class="col-6">
+        <label for="odotfunding">ODOT Funding</label>
+        <input kendoTextBox id="odotFunding" tabindex="2" maxlength="100" formControlName="odotFunding" required />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <label for="title">Title</label>
+        <input kendoTextBox id="title" tabindex="2" maxlength="100" formControlName="title" required />
+      </div>
+      <div class="col-6">
+        <label for="phaseTitle">Org Cost Sharing</label>
+        <input kendoTextBox id="orgCostSharing" tabindex="2" maxlength="100" formControlName="orgCostSharing" required />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <label for="status">Status</label>
+        <kendo-dropdownlist id="status" formControlName="status" [data]="this.parent.status" [textField]="'text'" [valueField]="'value'">
+        </kendo-dropdownlist>
+      </div>
+    </div>
+  </form>
+  <kendo-dialog-actions>
+    <button class="btn" tabindex="5" (click)="editDialogClose()">Cancel</button>
+    <button class="btn btn-margin-left" (click)="submitForm()">Save</button>
+  </kendo-dialog-actions>
+</kendo-dialog>

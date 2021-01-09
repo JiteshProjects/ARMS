@@ -1,0 +1,200 @@
+<kendo-grid class="k-prjdata forms-grid extra-grid-space"
+            [data]="CBData"
+            [rowClass]="rowCallback"
+            [sortable]="true"
+            [sort]="sort"
+            (sortChange)="sortChange($event)"
+            (groupChange)="groupChange($event)">
+  <ng-template kendoGridToolbarTemplate>
+    <div class="row">
+      <div class="col-12 table-button ">
+        <div class="add-btn-table">
+          <div class="grid-btn-bg">
+            <button type="button" class="btn add-grid-button k-button k-grid-add-command" (click)="onAddClick(true)" kendoGridAddCommand>
+              <img src="../../../../../assets/grid_toolbar_icons/Add_Toolbar_Icon.svg" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <kendo-grid-column field="eventUploadForDD" [hidden]="true">
+  </kendo-grid-column>
+  <kendo-grid-column field="controllingBoardNumber" title="CB Number" width="200">
+  </kendo-grid-column>
+  <kendo-grid-column field="controllingBoardCategory" title="Category">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      {{getTextById(dataItem.controllingBoardCategory,"category")}}
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="controllingBoardType" title="Type">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      {{getTextById(dataItem.controllingBoardType,"type")}}
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="submissionDate" title="Submitted Date">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      {{dataItem.submissionDate | date: 'MM/dd/yyyy'}}
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="controllingBoardDate" title="CB Date">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      {{dataItem.controllingBoardDate | date: 'MM/dd/yyyy'}}
+    </ng-template>
+  </kendo-grid-column>
+  <!--<kendo-grid-command-column title="Status" width="90px" [columnMenu]="false">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <span *ngIf="dataItem.activeInd == 'I'">InActive</span>
+      <span *ngIf="dataItem.activeInd == 'A'">Active</span>
+    </ng-template>
+  </kendo-grid-command-column>-->
+  <kendo-grid-column field="controllingBoardStatus" title="Status">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      {{getTextById(dataItem.controllingBoardStatus,"status")}}
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="document" title="Doc">
+  </kendo-grid-column>
+  <kendo-grid-command-column title="Edit" width="43px">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <button type="button" class="btn btn-edit" (click)="onEditClick(dataItem)" [disabled]="dataItem.activeInd == 'I'" kendoGridEditCommand><span class="fas fa-pencil-alt"></span></button>
+    </ng-template>
+  </kendo-grid-command-column>
+</kendo-grid>
+<!--
+  Add/Edit controlling board dialogue
+-->
+<kendo-dialog [width]="566" [height]="600" *ngIf="CBAddEditDialogOpened" (close)="AddEditCBDialogClose()">
+  <kendo-dialog-titlebar class="k-prjdata">{{ isNew ? 'Controlling Board – Add' : 'Controlling Board – Edit' }} </kendo-dialog-titlebar>
+  <form class="k-form" [formGroup]="CBAddEditForm" (ngSubmit)="saveCB()">
+    <div class="row">
+      <div class="col-6">
+        <label for="controllingBoardCategory">Category<span class="k-field-info k-required"> *</span></label>
+        <kendo-dropdownlist formControlName="controllingBoardCategory"
+                            [data]="CategoryItems"
+                            [defaultItem]="{text: 'Select Category',value: null }"
+                            [textField]="'text'"
+                            [valueField]="'value'"
+                            [value]="value"
+                            isRequired="true"
+                            [valuePrimitive]="true">
+        </kendo-dropdownlist>
+        <!--<div *ngIf="submitted && f.controllingBoardCategory.errors" class="k-tooltip-validation">
+          <div *ngIf="f.controllingBoardCategory.errors">Category is required</div>
+        </div>-->
+      </div>
+      <div class="col-6">
+
+        <label for="controllingBoardType">Type<span class="k-field-info k-required"> *</span></label>
+
+        <kendo-dropdownlist formControlName="controllingBoardType"
+                            [data]="typeItems"
+                            [defaultItem]="{text: 'Select Type',value: null }"
+                            [textField]="'text'"
+                            [valueField]="'value'"
+                            [value]="value"
+                            [valuePrimitive]="true">
+        </kendo-dropdownlist>
+        <!--<div *ngIf="submitted && f.controllingBoardType.value==null" class="k-tooltip-validation">
+          <div *ngIf="submitted && f.controllingBoardType.value==null">Type is required</div>
+        </div>-->
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        <label for="controllingBoardNumber">Controlling Board Number</label>
+        <input kendoTextBox id="controllingBoardNumber" [readonly]="f.controllingBoardCategory.value==161" formControlName="controllingBoardNumber" tabindex="1" maxlength="50" />
+
+      </div>
+
+      <div class="col-6">
+
+        <label for="controllingBoardStatus">Status<span class="k-field-info k-required"> *</span></label>
+        <kendo-dropdownlist formControlName="controllingBoardStatus"
+                            [data]="statusItems"
+                            [defaultItem]="{text: 'Select Status',value: null }"
+                            [textField]="'text'"
+                            [valueField]="'value'"
+                            [value]="value"
+                            [valuePrimitive]="true">
+        </kendo-dropdownlist>
+        <!--<div *ngIf="submitted && f.controllingBoardStatus.value==null" class="k-tooltip-validation">
+          <div *ngIf="submitted && f.controllingBoardStatus.value==null">Status is required</div>
+        </div>-->
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+
+        <label for="submissionDate">Submission Date<span class="k-field-info k-required"> *</span></label>
+        <kendo-datepicker formControlName="submissionDate"
+                          [min]="min" [format]="'MM/dd/yyyy'"
+                          [max]="max"
+                          required></kendo-datepicker>
+      </div>
+
+      <div class="col-6">
+
+        <label for="controllingBoardDate">Controlling Board Date<span class="k-field-info k-required"> *</span></label>
+        <kendo-datepicker formControlName="controllingBoardDate"
+                          [min]="min" [format]="'MM/dd/yyyy'"
+                          [max]="max"
+                          required></kendo-datepicker>
+      </div>
+    </div>
+
+    <div class="fade_rule col-md"></div>
+    <div class="row">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-6">
+            <label for="current-summary">Public Comments</label>
+          </div>
+          <div class="col-6">
+            <label class="float-right blue-text">{{CBAddEditForm.controls.publicCommentText.value.length}} OF {{maxChars}} Characters</label>
+          </div>
+        </div>
+        <textarea kendoTextArea formControlName="publicCommentText" rows="4" cols="50" maxlength="{{maxChars}}"></textarea>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <kendo-upload #myUpload="kendoUpload"
+                      [saveUrl]="uploadSaveUrl"
+                      [ngModelOptions]="{standalone: true}"
+                      [(ngModel)]="myFiles"
+                      [batch]="true"
+                      (upload)="uploadEventHandler($event)">
+          <ng-template kendoUploadFileTemplate let-files let-state="state">
+            <div class="row container">
+              <div class="col-2">
+                <!--<b>Type</b><br /><img class="file-icon" src="{{geticonfilepath(files[0].extension)}}" />-->
+                <b>Type</b><br /><span class="{{getIconFilePath(files[0].name)}}"></span>
+              </div>
+
+              <div class="col-4">
+                <b>Document</b><br /> {{files[0].name}}
+              </div>
+              <div class="col-2"><b>Size</b><br /> {{files[0].size}} bytes</div>
+              <div class="col-2">
+                <b>Delete</b><br />
+                <button type="button" class="btn btn-edit" (click)="remove(myUpload, files[0].uid)"><span class="fas fa-trash-alt"></span></button>
+              </div>
+              <div class="col-2">
+                <b>Private</b><br />
+                <input type="checkbox" [checked]="files[0].extension == 'I'" [ngModelOptions]="{standalone: true}" (click)="getChecked(files[0].uid)" kendoCheckBox />
+              </div>
+            </div>
+          </ng-template>
+        </kendo-upload>
+      </div>
+    </div>
+  </form>
+  <kendo-dialog-actions>
+    <button class="btn " (click)="AddEditCBDialogClose()" tabindex="5">Cancel</button>
+    <button class="btn btn-margin-left" [disabled]="!CBAddEditForm.dirty || !CBAddEditForm.valid" (click)="saveCB()" primary="true" tabindex="6">Save</button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+

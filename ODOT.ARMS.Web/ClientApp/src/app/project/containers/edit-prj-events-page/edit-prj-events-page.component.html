@@ -1,0 +1,31 @@
+<app-prj-events-list [events]="events$ | async"
+                     [phaseList]="phaseList$ | async"
+                     [primaryEvents]="primaryEvents$ | async"
+                     [secondaryEvents]="secondaryEvents$ | async"
+                     [eventStatuses]="eventStatuses$ | async"
+                     (selectEvent)="onSelectEvent($event)"
+                     (selectEventUpload)="onSelectUploadDoc($event)">
+</app-prj-events-list>
+
+<app-prj-event-save [event]="selectedEvent$ | async"
+                    [phaseList]="phaseList$ | async"
+                    [primaryEvents]="primaryEvents$ | async"
+                    [secondaryEvents]="secondaryEvents$ | async"
+                    [eventStatuses]="eventStatuses$ | async"
+                    [saveEventDialogStatus]="saveEventDialogStatus$ | async"
+                    (setSaveEventDialogStatus)="onSetSaveEventDialogStatus($event)"
+                    (saveEvent)="onSaveEvent($event)">
+
+</app-prj-event-save>
+
+<app-upload-file-save
+                   [dlgTitle]="'Event Documents Upload'"
+                   [uploadDialogStatus]="uploadDialogStatus$ | async"
+                   [projAltId]="(selectUploadSrc$ | async)?.projAltId" 
+                   [srcId]="(selectUploadSrc$ | async)?.srcId"
+                   [uploadFiles]="uploads$ | async"
+                   (setUploadEventDialogStatus)="onSetUploadDialogStatus($event)"
+                   (updateUploadFiles)="onUploadFilesChange($event)"
+                   (download)="onDownload($event)"
+                   (updateFile)="onUpdateFileUpload($event)">                   
+</app-upload-file-save>

@@ -1,0 +1,86 @@
+<kendo-grid class="k-prjdata events-grid forms-grid extra-grid-space"
+            [data]="events"
+            [sort]="sort"
+            [rowClass]="rowCallback"
+            scrollable="none">
+  <ng-template kendoGridToolbarTemplate>
+    <div class="row">
+      <div class="col-12 table-button ">
+        <div class="add-btn-table">
+          <div class="grid-btn-bg">
+            <button type="button" class="btn add-grid-button k-button k-grid-add-command" [disabled]="phaseList.length === 0" (click)="selectEvent.emit()" kendoGridAddCommand>
+              <img src="../../../../../assets/grid_toolbar_icons/Add_Toolbar_Icon.svg" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <kendo-grid-column field="eventSrc" title="Phase" width="300px">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      {{getPhaseDescription(dataItem.eventSrc)}}
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="primaryTypeId" title="Event Type" width="100px">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      {{getPrimaryEventDescription(dataItem.primaryTypeId)}}
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="secondaryTypeId" title="Secondary Type" width="300px">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      {{getSecondaryEventDescription(dataItem.secondaryTypeId)}}
+    </ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column field="beginDate" title="Begin Date" width="150px">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      {{dataItem.beginDate | date: 'MM/dd/yyyy'}}
+    </ng-template>
+  </kendo-grid-column>
+
+  <kendo-grid-column field="endDate" title="Due Date" width="150px">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      {{dataItem.endDate | date: 'MM/dd/yyyy'}}
+    </ng-template>
+  </kendo-grid-column>
+  <!--<kendo-grid-column field="statusTxt" title="Status">
+  </kendo-grid-column>-->
+
+  <kendo-grid-column field="activeInd" title="Status" width="80px">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      {{getEventStatusDescription(dataItem.activeInd)}}
+    </ng-template>
+  </kendo-grid-column>
+
+  <kendo-grid-column field="docCnt" title="Doc(s)" width="80px">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      {{formatDocCnt(dataItem.docCnt)}}
+    </ng-template>
+  </kendo-grid-column>
+
+  <kendo-grid-command-column title="Edit Files" width="65px" [columnMenu]="false">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <!--<button [disabled]="dataItem.activeInd == 'C'" type="button" class="btn btn-edit" kendoGridEditCommand (click)="selectEvent.emit(dataItem)">-->
+      <button [disabled]="dataItem.activeInd == 'C'" type="button" class="btn btn-edit" (click)="selectEventUpload.emit(dataItem)">
+        <span class="fas fa-pencil-alt"></span>
+      </button>
+    </ng-template>
+  </kendo-grid-command-column>
+
+  <kendo-grid-command-column title="Edit Event" width="70px" [columnMenu]="false">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <button [disabled]="dataItem.activeInd == 'C'" type="button" class="btn btn-edit" kendoGridEditCommand (click)="selectEvent.emit(dataItem)">
+        <span class="fas fa-pencil-alt"></span>
+      </button>
+    </ng-template>
+  </kendo-grid-command-column>
+  <!--<kendo-grid-command-column title="Inactivate" width="43px" [columnMenu]="false">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <button *ngIf="dataItem.activeInd == 'A'" type="button" class="btn btn-delete" kendoGridRemoveCommand (click)="DeleteEventForm(dataItem)">
+        <span class="fas fa-trash-alt"></span>
+      </button>
+      <button *ngIf="dataItem.activeInd == 'C'" type="button" class="btn btn-delete" kendoGridRemoveCommand [disabled]="true">
+        <span class="fas k-icon k-i-cancel"></span>
+      </button>
+    </ng-template>
+  </kendo-grid-command-column>-->
+</kendo-grid>

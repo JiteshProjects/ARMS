@@ -1,0 +1,63 @@
+<kendo-dialog [width]="566" [height]="400" *ngIf="this.parent.openSalaryWagesDialog" (close)="closeDialog()">
+  <kendo-dialog-titlebar class="k-prjdata">Add Salary and Wages</kendo-dialog-titlebar>
+  <form class="k-form" [formGroup]="this.parent.oneForAllBudgetForm" (ngSubmit)="this.parent.saveForm()">
+    <div class="row">
+      <div class="col-6">
+        <label for="phases">Phase <span class="k-field-info k-required">*</span></label>
+        <kendo-dropdownlist name="phase"
+                            [data]="this.parent.phases"
+                            [defaultItem]="{text: 'Select Phase',value: null }"
+                            [textField]="'text'"
+                            [valueField]="'value'"
+                            (valueChange)="this.parent.handlePhaseChange($event)"
+                            required>
+        </kendo-dropdownlist>
+      </div>
+      <div class="col-6">
+        <label for="odotFunding" class="control-label">ODOT Funding<span class="k-field-info k-required">*</span></label>
+        <input kendoTextBox formControlName="odotFunding" type="number" required />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <label for="title" class="control-label">Title<span class="k-field-info k-required">*</span></label>
+        <input kendoTextBox formControlName="title" required />
+      </div>
+      <div class="col-6">
+        <label for="orgCostSharing" class="control-label">
+          Org Cost Sharing<span class="k-field-info k-required">*</span>
+        </label>
+        <input kendoTextBox formControlName="orgCostSharing" type="number" required />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <label for="quantity" class="control-label">Quantity<span class="k-field-info k-required">*</span></label>
+        <input kendoTextBox formControlName="quantity" type="number" required />
+      </div>
+      <div class="col-6">
+        <label for="status">Status<span class="k-field-info k-required">*</span></label>
+        <kendo-dropdownlist name="status"
+                            [data]="this.parent.status"
+                            [defaultItem]="{text: 'Select Status',value: null }"
+                            [textField]="'text'"
+                            [valueField]="'value'"
+                            (valueChange)="this.parent.handleStatusChange($event)"
+                            required>
+        </kendo-dropdownlist>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <label for="notes">Notes<span class="k-field-info k-required">*</span></label>
+        <textarea kendoTextArea rows="4" cols="50" formControlName="notes"></textarea>
+      </div>
+    </div>
+
+  </form>
+
+  <kendo-dialog-actions>
+    <button class="btn" tabindex="5" (click)="closeDialog()">Cancel</button>
+    <button class="btn btn-margin-left" primary="true" tabindex="6" [disabled]="!this.parent.oneForAllBudgetForm.valid" (click)="this.parent.saveForm()">Save</button>
+  </kendo-dialog-actions>
+</kendo-dialog>
