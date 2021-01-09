@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { EffectsModule } from '@ngrx/effects';
-import { ReducerManagerDispatcher, StoreModule } from '@ngrx/store';
+import { StoreModule } from '@ngrx/store';
 import { projectReducer } from './state/reducers/project.reducer';
 import { projectTypeReducer } from './state/reducers/projecttype.reducers';
 import { PrjComponent } from './component/prj/prj.component';
@@ -8,7 +8,6 @@ import { ProjectRoutingModule } from './project-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LOCALE_ID, NgModule } from '@angular/core';
-import { Component } from '@angular/core';
 import { PrjDetailComponent } from './component/prj-detail/prj-detail.component';
 import { PrjHeaderComponent } from './component/prj-header/prj-header.component';
 import { PrjSummaryComponent } from './component/prj-summary/prj-summary.component';
@@ -16,7 +15,6 @@ import { PrjAbstractComponent } from './component/prj-abstract/prj-abstract.comp
 import { Agencyreducer } from '../agency/state/reducers/agencies.reducer';
 import { ProjectForDDEffects } from './state/effects/projectForDD.effects';
 import { AgencyEffects } from '../agency/state/effects/agency.effects';
-//import { PrjInfoBaseComponent } from './component/prj-info-base/prj-info-base.component';
 import { ProjectTypeEffects } from './state/effects/projects.effects';
 import { AdministrationStoreEffects } from '../manage/state/effects/administration-categories';
 //import { PrjCbComponent } from './component/prj-cb/prj-cb.component';
@@ -104,9 +102,14 @@ import { FileUploadsEffects } from './state/effects/file-uploads.effects';
 import { EditFinFundingPageComponent } from './containers/edit-fin-funding-page/edit-fin-funding-page.component';
 import { FinFundingListComponent } from './component/fin-funding-list/fin-funding-list.component';
 import { FinFundingSaveComponent } from './component/fin-funding-save/fin-funding-save-component';
+import { FinFundingAmountSaveComponent } from './component/fin-funding-amount-save/fin-funding-amount-save.component';
 import { fundingReducer } from './state/reducers/edit-fin-funding-page.reducer';
 //import { uploadsReducer } from './state/reducers/edit-project-uploads-page.reducer';
 import { EditFinFundingsPageEffects } from './state/effects/edit-fin-funding-page.effect';
+import { ContactsModule } from '../contacts/contacts.module';
+import { PrjPersonnelPageComponent } from './containers/prj-personel/prj-personnel-page.component';
+import { PrjPersonnelDisplayComponent } from './component/prj-personnel-display/prj-personnel-display.component';
+import { PrjPersonnelSaveComponent } from './component/prj-personnel-save/prj-personnel-save.component';
 import { GetFinLedgerPageComponent } from './containers/get-fin-ledger-page/get-fin-ledger-page.component';
 import { FinLedgerComponent } from './component/fin-ledger/fin-ledger.component';
 import { LedgerReducer } from './state/reducers/get-fin-ledger-page.reducer';
@@ -123,7 +126,6 @@ import { LedgerEffects } from './state/effects/get-fin-ledger-page.effects';
     FinancialOverviewComponent,
     FinancialBudgetComponent,
     FinancialInvoicesComponent,
-    FinancialLedgerComponent,
     PrjSummaryComponent,
     PrjAbstractComponent,
     EditPrjAbstractComponent,
@@ -175,8 +177,13 @@ import { LedgerEffects } from './state/effects/get-fin-ledger-page.effects';
     EditFinFundingPageComponent,
     FinFundingListComponent,
     FinFundingSaveComponent,
+    FinFundingAmountSaveComponent,
+    PrjPersonnelPageComponent,
+    PrjPersonnelDisplayComponent,
+    PrjPersonnelSaveComponent,
     GetFinLedgerPageComponent,
-    FinLedgerComponent
+    FinLedgerComponent,
+    FinancialLedgerComponent
 
   ],
 
@@ -187,6 +194,7 @@ import { LedgerEffects } from './state/effects/get-fin-ledger-page.effects';
     ReactiveFormsModule,
     StoreModule.forFeature('projectForDD', ProjectForDDreducer),
     StoreModule.forFeature('project', projectReducer),
+    StoreModule.forFeature('controllingBoard', reducer),
     StoreModule.forFeature('projectType', projectTypeReducer),
     StoreModule.forFeature('agency', Agencyreducer),
     StoreModule.forFeature('personnel', personnelReducer),
@@ -209,7 +217,8 @@ import { LedgerEffects } from './state/effects/get-fin-ledger-page.effects';
 
     EffectsModule.forFeature([ProjectForDDEffects, FundingListStoreEffects, SpecificListStoreEffects, AdministrationStoreEffects, AgencyEffects, ProjectTypeEffects, EditPrjEventsPageEffects,
       PersonnelEffects, BudgetEffects, ProjectCurrentSummaryEffects, EditPrjAbstractPageEffects, EditPrjPhasePageEffects, EditPrjBudgetPageEffects, ProjectInfoEffects, EditProjectUploadsPageEffects, EditPrjCbPageEffects, FileUploadsEffects, EditFinFundingsPageEffects, LedgerEffects]),
-    UploadModule
+    UploadModule,
+    ContactsModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'en-US' },

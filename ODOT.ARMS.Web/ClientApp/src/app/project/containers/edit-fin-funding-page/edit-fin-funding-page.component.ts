@@ -1,22 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { FundingRaw } from '../../models/fundings-raw';
-import * as fromCore from '../../../core/state/reducers';
-import * as fromFunding from "../../state/reducers/edit-fin-funding-page.reducer";
-import { setSaveFundingDialogStatus, setSelectedFunding, addFunding, updateFunding, updateFundingDocCount, setSelectedUploadFunding } from '../../state/actions/edit-funding-page.actions';
-import * as fundingSelector from "../../state/selector/project.funding.selectors";
 import { take } from "rxjs/operators";
+import * as fromCore from '../../../core/state/reducers';
+import * as fromProjectInfo from '../../state/reducers/project-info.reducer';
 import { LookupItem } from '../../../shared/models/lookup-item';
-import { setSelectUploadSrcSuccess } from '../../state/actions/edit-prj-cb-page.actions';
-import { loadFundingReferenceData } from '../../../core/state/actions/reference-data.actions';
+import { EventUpload, UploadSrc } from '../../models/event-upload';
+import { FundingRaw } from '../../models/fundings-raw';
+import { addFunding, setSaveFundingDialogStatus, setSelectedFunding, setSelectedUploadFunding, updateFunding, updateFundingDocCount } from '../../state/actions/edit-funding-page.actions';
+import { DownloadFileById, setSelectedUploadSrc, setUploadDialogStatus, updateUpload, updateUploadFileList } from '../../state/actions/file-uploads.actions';
 import * as fromProject from "../../state/reducers";
+import * as fromFunding from "../../state/reducers/edit-fin-funding-page.reducer";
 import * as fromFundingReducer from "../../state/selector/project.funding.selectors";
-import { setSaveEventDialogStatus, setSelectedEvent, addEvent, updateEvent, setSelectedUploadEvent, updateEventDocCount } from '../../state/actions/edit-project-events-page.actions';
-import { setUploadDialogStatus, setSelectedUploadSrc, updateUploadFileList, DownloadFileById, updateUpload } from '../../state/actions/file-uploads.actions';
+import * as fundingSelector from "../../state/selector/project.funding.selectors";
+import { ProjectInfo } from '../../models/projectInfo';
+import * as fromProjectSelectors from '../../state/selector/project-info.selectors';
+import * as fromProjectInfoActions from '../../state/actions/project-info.actions';
 
-import { UploadSrc, EventUpload } from '../../models/event-upload';
-import { EventRaw } from '../../models/event-raw';
 
 @Component({
   selector: 'app-edit-fin-funding-page',
@@ -37,9 +37,10 @@ export class EditFinFundingPageComponent implements OnInit {
   public selectedFunding$: Observable<FundingRaw>;
   public projAltId$: Observable<string>;
   public projAltId: string;
+  public ProjectInfo$: Observable<ProjectInfo>;
 
   public fundings$: Observable<FundingRaw[]>;
-  constructor(public coreStore: Store<fromCore.State>, public projectStore: Store<fromProject.State>,
+  constructor(public coreStore: Store<fromCore.State>, public projectStore: Store<fromProject.State>, private projInfoStore: Store<fromProjectInfo.ProjectInfoState>,
     public fundingStore: Store<fromFunding.State>) { }
   ngOnInit(): void {
     this.projectStore.select(fromProject.getProjectId).pipe(take(1)).subscribe(value => this.projectId = value);
@@ -47,12 +48,11 @@ export class EditFinFundingPageComponent implements OnInit {
     this.selectUploadFunding$ = this.fundingStore.select(fromFundingReducer.getSelectedUploadFunding);
     this.projAltId$ = this.projectStore.select(fromProject.selectProjectAltId);
     this.projAltId$.pipe(take(1)).subscribe(value => this.projAltId = value);
-
     this.selectUploadSrc$ = this.projectStore.select(fromProject.getSelectedUploadSrc);
     this.uploads$ = this.projectStore.select(fromProject.getAllUploads);
     this.saveFundingDialogStatus$ = this.projectStore.select(fundingSelector.getSaveFundingDialogStatus);
     //this.projectStore.select(fromProject.getProjectId).pipe(take(1)).subscribe(value => this.projectId$ = value);
-    //this.Fundings$ = this.projectStore.select(fromProject.);
+    this.ProjectInfo$ = this.projInfoStore.select(fromProjectSelectors.selectProjInfoByAltId(this.projAltId));
     this.fundingType$ = this.coreStore.select(fromCore.getFundingType);
     this.fundingSource$ = this.coreStore.select(fromCore.getFundingSource);
     this.uploadDialogStatus$ = this.projectStore.select(fromProject.getUploadEventDialogStatus);
@@ -60,7 +60,7 @@ export class EditFinFundingPageComponent implements OnInit {
 
   }
   onSelectFunding(funding: FundingRaw): void {
-    debugger;
+    //debugger;
 
     if (funding === undefined) {
       this.fundingStore.dispatch(setSelectedFunding({ Funding: funding }));
@@ -81,7 +81,7 @@ export class EditFinFundingPageComponent implements OnInit {
     this.projectStore.dispatch(setUploadDialogStatus({ status: dialogStatus }));
   }
   onUploadFilesChange(userFiles: Array<any>): void {
-    debugger;
+    //debugger;
     this.projectStore.dispatch(updateUploadFileList({ files: userFiles }));//Force the file list to reload
     // Is this a correct way of doing this?????
     this.selectUploadFunding$.pipe(take(1)).subscribe(ev => {
@@ -102,7 +102,7 @@ export class EditFinFundingPageComponent implements OnInit {
     this.projectStore.dispatch(setSelectedUploadSrc({ src: new UploadSrc(this.projAltId, funding.encumbranceId) }));
   }
   onSaveFunding(Funding: FundingRaw): void {
-    debugger;
+    //debugger;
     console.log('onSaveFunding - container', Funding.encumbranceId);
     if (Funding.encumbranceId) {
       this.fundingStore.dispatch(updateFunding({ Funding: Funding }));
@@ -112,6 +112,9 @@ export class EditFinFundingPageComponent implements OnInit {
       Funding.encubranceTypeCD = 0;
       this.fundingStore.dispatch(addFunding({ Funding: Funding }));
     }
-      this.fundingStore.dispatch(setSaveFundingDialogStatus({ status: false }));//Close the form
-    }
+    this.fundingStore.dispatch(setSaveFundingDialogStatus({ status: false }));//Close the form
+  }
+  public saveProjInfo(projectInfo: ProjectInfo) {
+    this.projInfoStore.dispatch(fromProjectInfoActions.editSelectedProject({ project: projectInfo }));
+  }
 }

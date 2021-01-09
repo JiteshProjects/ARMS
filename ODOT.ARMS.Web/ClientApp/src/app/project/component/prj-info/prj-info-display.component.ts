@@ -47,7 +47,8 @@ export class PrjInfoFormComponent implements OnInit, OnChanges {
       entryDt: new Date(),
       objectiveTxt: [''],
       projectTypeList: [null],
-      projectTypeNbr: ['']
+      projectTypeNbr: [''],
+      withholdingAmount:['']
     });
   }
 
@@ -78,6 +79,7 @@ export class PrjInfoFormComponent implements OnInit, OnChanges {
   ];
 
   ngOnInit(): void {
+    debugger;
     console.log('Loading the prj-info display component');
     console.log(this.projectInfo);
     if (this.projectInfo) {

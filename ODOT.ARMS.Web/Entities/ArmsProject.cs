@@ -36,6 +36,8 @@ namespace ODOT.ARMS.Web.Entities
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int ProjectAltId { get; set; }
 
+        public Int64? WithholdingAmount { get; set; }
+
         public virtual ArmsAgency Agency { get; set; }
         public virtual ArmsAdministrationCategory ProjectClassification { get; set; }
         public virtual ArmsAdministrationCategory ProjectStatus { get; set; }

@@ -1,14 +1,14 @@
-<kendo-grid class="k-prjdata events-grid forms-grid extra-grid-space"
-                  [data]="data"
-                  [pageSize]="state.take"
-                  [skip]="state.skip"
-                  [sort]="state.sort"
-                  [filter]="state.filter"
-                  [sortable]="true"
-                  [pageable]="true"
-                  [filterable]="true"
-                  (dataStateChange)="dataStateChange($event)"
-                  >
+<kendo-grid class=""
+            [data]="data"
+            [pageSize]="state.take"
+            [skip]="state.skip"
+            [sort]="state.sort"
+            [filter]="state.filter"
+            [sortable]="true"
+            [pageable]="true"
+            [filterable]="true"
+            (dataStateChange)="dataStateChange($event)"
+            >
   <ng-template kendoGridToolbarTemplate>
     <div class="row">
       <div class="col-12 table-button ">

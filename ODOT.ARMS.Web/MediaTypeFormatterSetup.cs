@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ODOT.ARMS.Web
 {
-    public static class MediaTypeFormatterSetup 
+    public static class MediaTypeFormatterSetup
     {
         public static void SetInputOutMediaFormatter(MvcOptions setupAction)
         {

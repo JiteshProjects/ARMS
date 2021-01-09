@@ -35,6 +35,7 @@ namespace ODOT.ARMS.Web.DTOs
         public string UserId { get; set; }
         public DateTime EntryDt { get; set; }
         public string ObjectiveTxt { get; set; }
+        public Int64? WithholdingAmount { get; set; }
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int ProjectAltId { get; set; }
         public ICollection<ProjectType> ProjectTypeList { get; set; }

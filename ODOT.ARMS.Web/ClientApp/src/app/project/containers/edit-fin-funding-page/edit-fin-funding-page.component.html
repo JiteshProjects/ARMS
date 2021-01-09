@@ -1,10 +1,9 @@
-<app-fin-funding-list 
-                      [funding]="fundings$ | async"
+<app-fin-funding-list [funding]="fundings$ | async"
                       (selectFunding)="onSelectFunding($event)"
                       [fundingType]="fundingType$ | async"
                       [fundingSource]="fundingSource$ | async"
                       (selectFundingUpload)="onSelectUploadDoc($event)">
-                      >
+  >
 </app-fin-funding-list>
 
 <app-fin-funding-save [selectedfunding]="selectedFunding$ | async"
@@ -14,7 +13,6 @@
                       [fundingSource]="fundingSource$ | async"
                       (saveFunding)="onSaveFunding($event)">
 </app-fin-funding-save>
-
 
 <app-upload-file-save [dlgTitle]="'Funding Documents Upload'"
                       [uploadDialogStatus]="uploadDialogStatus$ | async"
@@ -26,5 +24,10 @@
                       (download)="onDownload($event)"
                       (updateFile)="onUpdateFileUpload($event)">
 </app-upload-file-save>
+
+
+
+<app-fin-funding-amount-save [projectInfo]=  "ProjectInfo$ | async" (saveProjInfo)= "saveProjInfo($event)">
+</app-fin-funding-amount-save>
 
 

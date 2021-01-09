@@ -843,6 +843,9 @@ namespace ODOT.ARMS.Web.Entities
                   .HasColumnName("VENDOR_ID_TXT")
                   .HasMaxLength(100);
 
+                entity.Property(e => e.WithholdingAmount)
+                 .HasColumnName("WITHHOLDING_AMOUNT")
+                 .HasMaxLength(100);
                 //entity.Property(e => e.ProjectAltId).IsRequired().HasColumnName("PROJ_ALT_ID");
                 entity.Property(e => e.ProjectAltId).HasColumnName("PROJ_ALT_ID").Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
             });

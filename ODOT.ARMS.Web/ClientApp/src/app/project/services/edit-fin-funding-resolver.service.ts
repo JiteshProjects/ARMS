@@ -12,6 +12,10 @@ import * as fromProject from "../state/reducers";
 import * as fromFunding from "../state/reducers/edit-fin-funding-page.reducer";
 import { FundingService } from './Funding.service';
 import { ProjectService } from './project.service';
+import * as fromProjectInfo from '../state/reducers/project-info.reducer';
+import * as fromProjectInfoactions from '../state/actions/project-info.actions';
+import * as fromProjectInfoSelectors from '../state/selector/project-info.selectors';
+
 
 @Injectable({
   providedIn: 'root'
@@ -19,17 +23,26 @@ import { ProjectService } from './project.service';
 export class EditProjectFundingResolverService {
 
   projectId$: Observable<string>;
+    projAltId: string;
+    projectAltId$: Observable<any>;
+
 
   constructor(private route: ActivatedRoute,
     public coreStore: Store<fromCore.State>,
     public projectStore: Store<fromProject.State>,
     public projectService: ProjectService,
+    private projectInfoStore: Store<fromProjectInfo.ProjectInfoState>,
+    private projService: ProjectService,
     public fundingStore: Store<fromFunding.State>, public fundingService: FundingService) {
-
     this.projectId$ = this.projectStore.select(fromProject.getProjectId);
+   
   }
 
   loadFinFundings(projectId: string): Observable<boolean> {
+    debugger;
+    this.projectAltId$ = this.projectStore.select(fromProject.selectProjectAltId);
+    this.projAltId = this.projService.getParam(this.projectAltId$);
+    this.projectInfoStore.dispatch(fromProjectInfoactions.loadSelectedProject({ projectAltID: this.projAltId }));
     return forkJoin(
       this.waitForReferenceDataToLoad(),
       this.fundingService.getFundingByProjectId(projectId),
@@ -50,24 +63,23 @@ export class EditProjectFundingResolverService {
     return of(true);
   }
 
-  //waitForReferenceDataToLoad(): Observable<boolean> {
-  //  debugger;
-  //  this.coreStore.dispatch(loadFundingReferenceData());
-  //  return this.coreStore.pipe(
-  //    select(fromCore.getProjectEventReferenceDataLoaded),
-  //    tap(loaded => {
-  //      console.info('waitForReferenceDataToLoad for funding');
-  //      this.coreStore.dispatch(loadFundingReferenceData());
-  //    }),
-  //    filter(loaded => loaded),
-  //    take(1)
-  //  );
-  //}
-
-
-
-
-
+  loadProjectInfo(projAltId: string): Observable<boolean> {
+    debugger;
+    return this.projectInfoStore.pipe(
+      select(fromProjectInfoSelectors.projInfoLoaded), // selecting the projInfoLoaded  property using a  selector
+      tap(projInfoLoaded => {
+        if (!projInfoLoaded) {  //  dispatch an action to hit the backend if the projInfoLoaded is false
+          this.projectInfoStore.dispatch(fromProjectInfoactions.loadSelectedProject({ projectAltID: projAltId }));
+        }
+      }),
+      filter(projInfoLoaded => !!projInfoLoaded),  // filter to pick up the values !! converts the value to a boolean
+      take(1),
+      catchError(() => {
+        console.log('error occured during project resolver');
+        return of(false);
+      })
+    );
+  }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     return combineLatest(
       this.projectId$

@@ -1,22 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, ParamMap } from '@angular/router';
-import { select, Store } from '@ngrx/store';
-import *  as fromProjectForDDAction from "../../state/actions/projectForDD.actions";
-import * as fromProjectreducer from "../../state/reducers/project.reducer";
-import * as fromProjectTypereducer from "../../state/reducers/projecttype.reducers";
-import * as fromAgencyreducer from '../../../agency/state/reducers/agencies.reducer';
-import * as fromProjectforDDreducer from '../../state/reducers/projectForDD.reducer';
-import * as fromAgencyAction from '../../../agency/state/actions/agency.actions';
-import * as  fromProjectAction from '../../state/actions/project.actions';
-import { GenericLookupListForDD, dateModel, ProjectTypesList, VendorAddressForDD, IGenericLookupListForDD, CollectionList, WarehouseData } from '../../models/project-for-update';
-import { AgencyDetailModel } from '../../../agency/models/agencydetails.module';
-import { FormGroup, FormBuilder, Validators, FormControl, AsyncValidatorFn, AbstractControl } from '@angular/forms';
-import { Project, PassProjectData, PhaseRaw, IPhase } from '../../models/projects';
-import { Observable, timer, BehaviorSubject } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Update } from '@ngrx/entity';
+import { select, Store } from '@ngrx/store';
+import { Observable, timer } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+import { AgencyDetailModel } from '../../../agency/models/agencydetails.module';
+import * as fromAgencyAction from '../../../agency/state/actions/agency.actions';
+import * as fromAgencyreducer from '../../../agency/state/reducers/agencies.reducer';
 import { kendonotificationservice } from '../../../shared/services/kendo-notification.service';
+import { GenericLookupListForDD, VendorAddressForDD } from '../../models/project-for-update';
+import { IPhase, PassProjectData, Project } from '../../models/projects';
 import { ProjectService } from '../../services/project.service';
+import * as fromProjectAction from '../../state/actions/project.actions';
+import * as fromProjectForDDAction from "../../state/actions/projectForDD.actions";
+import * as fromProjectreducer from "../../state/reducers/project.reducer";
+import * as fromProjectforDDreducer from '../../state/reducers/projectForDD.reducer';
+import * as fromProjectTypereducer from "../../state/reducers/projecttype.reducers";
 
 @Component({
   selector: 'app-prj-info-base',
@@ -60,6 +60,7 @@ export class PrjInfoBaseComponent implements OnInit {
       userId: [''],
       entryDt: new Date(),
       objectiveTxt: [''],
+      withholdingAmount:[''],
       phaseList: new Array<IPhase>(),
       projectTypeList: new Array<GenericLookupListForDD>()
     });
